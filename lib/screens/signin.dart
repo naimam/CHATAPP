@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chatapp/screens/signup.dart';
-import 'package:chatapp/screens/home.dart';
+import 'package:chatapp/screens/home/homeScreen.dart';
 
 // create STATEFUL WIDGET signin
 class SignIn extends StatefulWidget {
@@ -174,13 +174,10 @@ class _SignInState extends State<SignIn> {
           .then((uid) => {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Home()),
+                  MaterialPageRoute(builder: (context) => Home()),
                 )
               })
           .catchError((e) {});
     }
   }
-
-// sign in w google
-
 }

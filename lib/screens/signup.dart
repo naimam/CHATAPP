@@ -1,5 +1,6 @@
+import 'package:chatapp/screens/home/homeScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:chatapp/screens/home.dart';
+import 'package:chatapp/screens/home/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chatapp/screens/signin.dart';
@@ -243,14 +244,12 @@ class _SignUpState extends State<SignUp> {
         .set({
           "first_name": fNameController.text,
           "last_name": lNameController.text,
-          "email": emailController.text,
-          "role": "customer",
-          "register_date": DateTime.now()
+          "email": emailController.text
         })
         .then((value) => null)
         .onError((error, stackTrace) => null);
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const Home()));
+        context, MaterialPageRoute(builder: (context) => Home()));
 
     setState(() {});
   }
