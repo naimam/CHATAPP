@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "168349530971",
+    "project_id": "chatapp-7c74c",
+    "storage_bucket": "chatapp-7c74c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168349530971:android:9993ed69632e62187d387e",
+        "android_client_info": {
+          "package_name": "com.naimamohamed.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "168349530971-6gj22bfos27kqccpposl5hopl7q9rgke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfyKzf-Ifdz9DiMTaFCNKsB19npbi6qXs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "168349530971-6gj22bfos27kqccpposl5hopl7q9rgke.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
