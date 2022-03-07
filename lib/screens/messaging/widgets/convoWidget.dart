@@ -1,6 +1,7 @@
+// ignore_for_file: file_names
+
 import 'package:chatapp/screens/messaging/newConversationScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:chatapp/models/user.dart';
 import 'package:intl/intl.dart';
@@ -15,7 +16,7 @@ class ConvoListItem extends StatelessWidget {
 
   final auth.User user;
   final User? peer;
-  Map<dynamic, dynamic> lastMessage;
+  late Map<dynamic, dynamic> lastMessage;
 
   late BuildContext context;
   late String groupId;
@@ -45,7 +46,8 @@ class ConvoListItem extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
+        print(getGroupChatId());
+        Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) => NewConversationScreen(
                 uid: user.uid, contact: peer, convoID: getGroupChatId())));
       },
@@ -68,54 +70,63 @@ class ConvoListItem extends StatelessWidget {
   }
 
   Widget buildConvoDetails(String title, BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: Text(
-                  title,
-                  textAlign: TextAlign.left,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+    return Container(
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Row(
+              children: <Widget>[
+                const CircleAvatar(
+                  backgroundImage: AssetImage("assets/images/profilepic.jpg"),
                 ),
-              ),
-              read
-                  ? Container()
-                  : Icon(Icons.brightness_1,
-                      color: Theme.of(context).accentColor, size: 15)
-            ]),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 8.0),
-                child: Text(lastMessage['content'],
-                    textAlign: TextAlign.left,
-                    maxLines: 1,
-                    overflow: TextOverflow.clip),
-              ),
+                const SizedBox(
+                  width: 16,
+                ),
+                Expanded(
+                  child: Container(
+                    color: Colors.transparent,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          title,
+                          style: const TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black),
+                          textAlign: TextAlign.left,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        Text(
+                          lastMessage['content'],
+                          style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.grey.shade600,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                getTime(lastMessage['timestamp']),
-                textAlign: TextAlign.right,
-              ),
-            )
-          ],
-        )
-      ],
+          ),
+          Icon(Icons.brightness_1,
+              color: read ? Colors.grey : Colors.blue, size: 15),
+          const SizedBox(
+            width: 5,
+          ),
+          Text(
+            getTime(lastMessage['timestamp']),
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
     );
   }
 

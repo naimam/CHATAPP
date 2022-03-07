@@ -1,8 +1,9 @@
 import 'package:chatapp/models/convo.dart';
 import 'package:chatapp/models/user.dart';
 import 'package:chatapp/providers/newMessageProvider.dart';
+import 'package:chatapp/screens/home/profileScreen.dart';
 import 'package:chatapp/screens/messaging/widgets/convoWidget.dart';
-import 'package:chatapp/screens/signin.dart';
+import 'package:chatapp/screens/auth/signin.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ class HomeBuilder extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           iconTheme: Theme.of(context).iconTheme,
           title: const Text(
             'Chats',
@@ -29,6 +31,24 @@ class HomeBuilder extends StatelessWidget {
                 },
                 child: const Icon(
                   Icons.add,
+                  size: 30.0,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {
+                  // navigate to profile
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileScreen(),
+                    ),
+                  );
+                },
+                child: const Icon(
+                  Icons.person,
                   size: 30.0,
                 ),
               ),
@@ -76,25 +96,4 @@ class HomeBuilder extends StatelessWidget {
 
     return list;
   }
-}
-
-void signOut(BuildContext context) async {
-  return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Logout"),
-          content: const Text("Are you sure you want to log out?"),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () async {
-                await auth.FirebaseAuth.instance.signOut();
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const SignIn()));
-              },
-              child: const Text("Yes."),
-            ),
-          ],
-        );
-      });
 }

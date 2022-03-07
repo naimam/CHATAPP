@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:chatapp/models/user.dart';
 import 'package:chatapp/models/convo.dart';
 
@@ -17,7 +16,7 @@ class Database {
                 User.fromMap(snap.data() as Map<String, dynamic>))
             .toList())
         .handleError((dynamic e) {
-      print(e);
+      print("db stream list users error: $e");
     });
   }
 
@@ -70,7 +69,7 @@ class Database {
 
       FirebaseFirestore.instance
           .runTransaction((Transaction transaction) async {
-        await transaction.set(
+        transaction.set(
           messageDoc,
           <String, dynamic>{
             'idFrom': id,
@@ -113,7 +112,25 @@ class Database {
         })
         .then((dynamic success) {})
         .catchError((dynamic error) {
-          print(error);
+          print("db update last message error: $error");
         });
+  }
+
+  static Future<void> addRating(
+      double rating, String userId, String peerId) async {
+    final List<dynamic> ratingUids =
+        (await _db.collection('users').doc(peerId).get()).data()!['ratingUids'];
+    if (!ratingUids.contains(userId)) {
+      try {
+        await _db.collection('users').doc(peerId).update({
+          'rating': FieldValue.increment(rating),
+          'ratingUids': FieldValue.arrayUnion([userId]),
+        });
+      } catch (e) {
+        print(e);
+      }
+    } else {
+      return Future.error('Rating from this user already exists');
+    }
   }
 }

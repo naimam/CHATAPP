@@ -1,4 +1,5 @@
 import 'package:bubble/bubble.dart';
+import 'package:chatapp/screens/home/contactProfileScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:chatapp/models/user.dart';
@@ -13,8 +14,24 @@ class NewConversationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-            AppBar(automaticallyImplyLeading: true, title: Text(contact!.name)),
+        appBar: AppBar(
+            automaticallyImplyLeading: true,
+            title: Text(contact!.name),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.person),
+                // onpressed navigate to user profile
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => contactProfileScreen(
+                                peerId: contact!.id,
+                                currentUserId: uid,
+                              )));
+                },
+              )
+            ]),
         body: ChatScreen(uid: uid, convoID: convoID, contact: contact!));
   }
 }
@@ -85,7 +102,7 @@ class _ChatScreenState extends State<ChatScreen> {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: IconButton(
-                  icon: Icon(Icons.send, size: 25),
+                  icon: const Icon(Icons.send, size: 25),
                   onPressed: () => onSendMessage(textEditingController.text),
                 ),
               ),
@@ -131,38 +148,38 @@ class _ChatScreenState extends State<ChatScreen> {
     }
 
     if (document['idFrom'] == uid) {
-      // Right (my message)
+      // user msg
       return Row(
         children: <Widget>[
           // Text
           Container(
-              margin: EdgeInsets.symmetric(vertical: 5),
+              margin: const EdgeInsets.symmetric(vertical: 5),
               child: Bubble(
                   color: Colors.blueGrey,
                   elevation: 0,
                   padding: const BubbleEdges.all(10.0),
                   nip: BubbleNip.rightTop,
                   child: Text(document['content'],
-                      style: TextStyle(color: Colors.white))),
+                      style: const TextStyle(color: Colors.white))),
               width: 200)
         ],
         mainAxisAlignment: MainAxisAlignment.end,
       );
     } else {
-      // Left (peer message)
+      // peer msg
       return Container(
-        margin: EdgeInsets.symmetric(vertical: 5),
+        margin: const EdgeInsets.symmetric(vertical: 5),
         child: Column(
           children: <Widget>[
             Row(children: <Widget>[
               Container(
                 child: Bubble(
-                    color: Colors.white10,
+                    color: Color.fromARGB(26, 56, 47, 47),
                     elevation: 0,
                     padding: const BubbleEdges.all(10.0),
                     nip: BubbleNip.leftTop,
                     child: Text(document['content'],
-                        style: TextStyle(color: Colors.white))),
+                        style: const TextStyle(color: Colors.black))),
                 width: 200.0,
                 margin: const EdgeInsets.only(left: 10.0),
               )
@@ -181,7 +198,7 @@ class _ChatScreenState extends State<ChatScreen> {
       Database.sendMessage(convoID, uid, contact.id, content,
           DateTime.now().millisecondsSinceEpoch.toString());
       listScrollController.animateTo(0.0,
-          duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+          duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
     }
   }
 }

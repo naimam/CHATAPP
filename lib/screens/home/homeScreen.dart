@@ -1,8 +1,9 @@
 import 'package:chatapp/providers/conversationProvider.dart';
+import 'package:chatapp/screens/home/homeBuilder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:chatapp/screens/signin.dart';
+import 'package:chatapp/screens/auth/signin.dart';
 
 class Home extends StatefulWidget {
   @override
