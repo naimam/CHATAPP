@@ -31,7 +31,6 @@ class _contactProfileScreenState extends State<contactProfileScreen> {
   late final _ratingController;
   late double _userRating;
   late GlobalKey<FormState> _formKey;
-  late bool isLoading;
 
   @override
   void initState() {
@@ -39,7 +38,6 @@ class _contactProfileScreenState extends State<contactProfileScreen> {
     _formKey = GlobalKey<FormState>();
     _ratingController = TextEditingController();
     _userRating = 0.0;
-    isLoading = false;
     peerId = widget.peerId;
     currentUserId = widget.currentUserId;
     isRated = false;
@@ -58,11 +56,6 @@ class _contactProfileScreenState extends State<contactProfileScreen> {
             .doc(peerId)
             .snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
           var peerDocument = snapshot.data;
           contact = User.fromMap(peerDocument!.data() as Map<String, dynamic>);
           peerName = peerDocument['name'] ?? 'No name';
@@ -211,9 +204,7 @@ class _contactProfileScreenState extends State<contactProfileScreen> {
                             ),
                           ),
                         ),
-                        isLoading
-                            ? const CircularProgressIndicator()
-                            : const SizedBox(),
+                        const SizedBox(),
                       ]),
                 ),
               );
@@ -223,20 +214,11 @@ class _contactProfileScreenState extends State<contactProfileScreen> {
   }
 
   void addRating(double rating, String userId, String peerId) async {
-    setState(() {
-      isLoading = true;
-    });
     try {
       Database.addRating(rating, userId, peerId);
-      setState(() {
-        isLoading = false;
-      });
+
       Navigator.of(context, rootNavigator: true).pop('dialog');
     } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      print("test");
       print(e);
     }
   }

@@ -18,18 +18,6 @@ class ProfileScreenState extends State<ProfileScreen> {
   late double userRatingCount;
   late double userRatingAverage;
 
-  late final _profileUrlController;
-  late GlobalKey<FormState> _formKey;
-  late bool isLoading;
-
-  @override
-  void initState() {
-    super.initState();
-    _formKey = GlobalKey<FormState>();
-    _profileUrlController = TextEditingController();
-    isLoading = false;
-  }
-
   @override
   Widget build(BuildContext context) {
     final auth.User firebaseUser = Provider.of<auth.User>(context);

@@ -130,7 +130,7 @@ class Database {
         print(e);
       }
     } else {
-      return Future.error('Rating from this user already exists');
+      print('already rated');
     }
   }
 }
